@@ -26,7 +26,7 @@
 * Optimize scheduler loop and message dispatch for a 25% speed boost
 
 * Fix bug with the toplevel Actor never resuming if a newly spawend Actor
-  registeres interest in Rev events.  Toplevel Actor is now rescheduled if
+  registers interest in Rev events.  Toplevel Actor is now rescheduled if
   the event loop isn't running.
 
 0.1.2:

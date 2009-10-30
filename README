@@ -309,7 +309,7 @@ This will provide you with the entire next message, with the newline delimiter
 already removed.
 
 If the filter name is a symbol, Revactor will look under its filters directory
-for a class of the cooresponding name.  Alternatively you can pass the name of
+for a class of the corresponding name.  Alternatively you can pass the name of
 a class you created yourself which responds to the methods encode and decode:
 
   sock = Revactor::TCP.connect(host, port, :filter => MyFilter)
@@ -351,7 +351,7 @@ extremely feature rich platform, and many features can be borrowed and
 incorporated into Revactor.
 
 Short term goals include adding thread safety.  This will allow Actors in
-different threads to send meassages to each other, making it easy to spin off
+different threads to send messages to each other, making it easy to spin off
 long-term blocking tasks into separate threads.
 
 Next on the agenda is implementing DRb.  This should be possible simply by
