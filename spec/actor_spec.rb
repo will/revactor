@@ -71,7 +71,7 @@ describe Actor do
       @actor_run.should be_true
     end
         
-    it "times out if a message isn't received after the specifed interval" do
+    it "times out if a message isn't received after the specified interval" do
       actor = Actor.spawn do
         Actor.receive do |filter|
           filter.when(:foo) { :wrong }

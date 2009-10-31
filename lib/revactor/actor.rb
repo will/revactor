@@ -24,12 +24,12 @@ end
 # Error raised when attempting to link to dead Actors
 class DeadActorError < StandardError; end
 
-# Actors are lightweight concurrency primitives which communiucate via message
+# Actors are lightweight concurrency primitives which communicate via message
 # passing.  Each actor has a mailbox which it scans for matching messages.
 # An actor sleeps until it receives a message, at which time it scans messages
 # against its filter set and then executes appropriate callbacks.
 #
-# The Actor class is definined in the global scope in hopes of being generally
+# The Actor class is defined in the global scope in hopes of being generally
 # useful for Ruby 1.9 users while also attempting to be as compatible as
 # possible with the Omnibus and Rubinius Actor implementations.  In this way it 
 # should be possible to run programs written using Revactor to on top of other

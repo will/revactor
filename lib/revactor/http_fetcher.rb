@@ -14,7 +14,7 @@ module Revactor
   # The HttpFetcher class is callback-driven and intended for subclassing.
   # When a request completes successfully, the on_success callback is called.
   # An on_failure callback represents non-200 HTTP responses, and on_error
-  # delivers any exceptions which occured during the fetch.
+  # delivers any exceptions which occurred during the fetch.
   class HttpFetcher
     def initialize(nworkers = 8)
       @_nworkers = nworkers
