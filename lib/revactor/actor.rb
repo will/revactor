@@ -205,6 +205,14 @@ class Actor
 
   alias_method :send, :<<
   
+  # Do a syncronous call 
+  def >>(message)
+    message = [*message, Actor.current]
+    self << message
+    Actor.receive { |f| f.when(Object) { |response| response } }
+  end
+  
+  
   # Establish a bidirectional link to the given Actor and notify it of any
   # system events which occur in this Actor (namely exits due to exceptions)
   def link(actor)

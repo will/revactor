@@ -39,4 +39,14 @@ describe "actorize" do
     response = Actor.receive { |f| f.when(Object) {|sitting| sitting} }
     response.should be_true    
   end
+  
+  it "should be able to send synchronous messages" do
+    dog = Dog.spawn
+
+    ( dog >> T[:sitting?] ).should be_false
+    
+    dog << :sit
+    
+    ( dog >> T[:sitting?] ).should be_true    
+  end
 end
