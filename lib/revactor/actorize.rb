@@ -41,12 +41,21 @@
 # to Objects.
 #
 module Actorize
+  def receive(pattern, method)
+    @filters ||= []
+    @filters << {:pattern => pattern, :method => method}
+  end
+ 
   def spawn(*args)
     _actorize Actor.spawn(*args, &method(:new))
   end
   
   def spawn_link(*args)
     _actorize Actor.spawn_link(*args, &method(:new))
+  end
+  
+  def filters
+    @filters
   end
   
   #######
@@ -58,7 +67,7 @@ module Actorize
     actor.instance_variable_set(:@_class, self)
     actor
   end
-  
+
   module InstanceMethods
     def method_missing(*args, &block)
       return super unless @_class.respond_to?(:call)

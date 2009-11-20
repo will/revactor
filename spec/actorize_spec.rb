@@ -63,4 +63,37 @@ describe "actorize" do
   end
 end
 
+describe "declaritive filters" do
+   class Dog
+    extend Actorize
 
+    def initialize(sitting=false)
+      @sitting = sitting
+      loop do
+        Actor.receive do |f|
+         self.class.filters.each do |rule|
+           f.when(rule[:pattern]) {|message| self.send(rule[:method], *message) }
+         end
+       end
+      end
+    end
+
+    receive :sit, :sit
+    def sit(_)
+      @sitting = true
+    end
+
+    receive T[:sitting?], :sitting?
+    def sitting?(_, sender)
+      sender[:sender] << T[sender[:key], @sitting]
+    end
+  end
+ 
+
+  it "should work like the explicit case" do
+    dog = Dog.spawn
+    ( dog >> T[:sitting?] ).should be_false
+    dog << :sit
+    ( dog >> T[:sitting?] ).should be_true    
+  end
+end
