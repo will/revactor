@@ -205,11 +205,16 @@ class Actor
 
   alias_method :send, :<<
   
-  # Do a syncronous call 
+  # Do a synchronous call 
+  # this adds the sender and a (fairly) unique key
+  # to respond synchronously, you must put the key at the start of the message
+  # this prevents other messages from being received
   def >>(message)
-    message = [*message, Actor.current]
+    key = rand
+    message = [*message, {:sender => Actor.current, :key => key}]
+
     self << message
-    Actor.receive { |f| f.when(Object) { |response| response } }
+    Actor.receive { |f| f.when(T[key, Object]) { |_,response| response } }
   end
   
   
