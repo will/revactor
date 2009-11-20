@@ -46,17 +46,21 @@ describe "actorize" do
     response.should be_true    
   end
   
-  it "should be able to send synchronous messages" do
-    dog = Dog.spawn
-    ( dog >> T[:sitting?] ).should be_false
-    dog << :sit
-    ( dog >> T[:sitting?] ).should be_true    
-  end
+  describe "synchronous" do
+    it "should be able to send synchronous messages" do
+      dog = Dog.spawn
+      ( dog >> T[:sitting?] ).should be_false
+      dog << :sit
+      ( dog >> T[:sitting?] ).should be_true    
+    end
 
-  it "it should catch the correct message, and not the first it gets" do
-    dog = Dog.spawn
+    it "it should catch the correct message, and not the first it gets" do
+      dog = Dog.spawn
 
-    Actor.current << true
-    ( dog >> T[:sitting?] ).should be_false
+      Actor.current << true
+      ( dog >> T[:sitting?] ).should be_false
+    end
   end
 end
+
+
