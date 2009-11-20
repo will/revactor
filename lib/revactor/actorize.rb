@@ -41,9 +41,13 @@
 # to Objects.
 #
 module Actorize
-  def receive(pattern, method)
+  def self.extended(klass)
+    klass.send :include, InstanceMethods
+  end
+
+  def call(method, pattern)
     @filters ||= []
-    @filters << {:pattern => pattern, :method => method}
+    @filters << {:method => method, :pattern => pattern[:when]}
   end
  
   def spawn(*args)
@@ -63,7 +67,6 @@ module Actorize
   #######
   
   def _actorize(actor)
-    actor.extend InstanceMethods
     actor.instance_variable_set(:@_class, self)
     actor
   end
@@ -80,6 +83,24 @@ module Actorize
     
     def inspect
       "#<#{self.class}(#{remote_class}):0x#{object_id.to_s(16)}>"
+    end
+
+    def receive_loop
+      return false unless self.class.filters
+      loop do
+        Actor.receive do |f|
+         self.class.filters.each do |rule|
+           f.when(rule[:pattern]) do |message|
+             meth = rule[:method]
+             if self.method(meth).arity == 0
+               self.send(meth)
+             else
+               self.send(meth, *message)
+             end
+           end
+         end
+       end
+      end
     end
   end
 end

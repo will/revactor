@@ -69,24 +69,18 @@ describe "declaritive filters" do
 
     def initialize(sitting=false)
       @sitting = sitting
-      loop do
-        Actor.receive do |f|
-         self.class.filters.each do |rule|
-           f.when(rule[:pattern]) {|message| self.send(rule[:method], *message) }
-         end
-       end
-      end
+      receive_loop
     end
 
-    receive :sit, :sit
-    def sit(_)
+    def sit
       @sitting = true
     end
+    call :sit, :when => :sit
 
-    receive T[:sitting?], :sitting?
     def sitting?(_, sender)
       sender[:sender] << T[sender[:key], @sitting]
     end
+    call :sitting?, :when => T[:sitting?]
   end
  
 
