@@ -16,12 +16,12 @@ class NodeManager
   
   def get_messages
     take_all do |msg|
-      p msg
-      @actors[:manager] << msg      
+      actor, message = msg
+      @actors[actor] << message      
     end
     puts "... #{@actors.inspect}"
     
-    Actor.current << :get_messages
+    @actors[:manager] << :get_messages
     Actor.sleep 2
   end
   call :get_messages, :when => :get_messages
