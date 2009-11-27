@@ -3,7 +3,8 @@ require 'tuplesclient'
 
 class NodeManager
   extend Actorize
-  def initialize
+  def initialize(node_name)
+    @node_name = node_name
     @ts = TupleClient::get_ts
     @actors = {:manager => Actor.current}
     receive_loop
@@ -19,8 +20,8 @@ class NodeManager
       actor, message = msg
       @actors[actor] << message      
     end
-    puts "... #{@actors.inspect}"
     
+    puts "[#{@node_name}]\t#{@actors.inspect}"
     @actors[:manager] << :get_messages
     Actor.sleep 2
   end
@@ -42,15 +43,10 @@ class NodeManager
   
   def take_message
     begin
-      node, message = @ts.take( [:node_1, nil], 0) 
+      node, message = @ts.take( [@node_name, nil], 0) 
     rescue Rinda::RequestExpiredError
       message = nil
     end
     message
   end
 end
-
-manager = NodeManager.spawn
-manager << :init
-
-loop { Actor.sleep 2 }
