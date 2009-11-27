@@ -5,6 +5,7 @@ class NodeManager
   extend Actorize
   def initialize
     @ts = TupleClient::get_ts
+    @actors = {}
     receive_loop
   end
 
@@ -14,13 +15,22 @@ class NodeManager
   call :init, :when => :init
   
   def get_messages
-    take_all { |msg| p msg }
-    puts "..."
+    take_all do |msg|
+      p msg
+      Actor.current << msg      
+    end
+    puts "... #{@actors.inspect}"
+    
     Actor.current << :get_messages
     Actor.sleep 2
   end
   call :get_messages, :when => :get_messages
-    
+  
+  def create_actor(_, actor_name, class_name)
+    @actors[actor_name] = Module::const_get(class_name).spawn
+  end
+  call :create_actor, :when => T[:create_actor]
+  
   private
    
   def take_all
