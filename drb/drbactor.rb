@@ -8,15 +8,19 @@ class NodeManager
     receive_loop
   end
 
+  def init
+    Actor.current << :get_messages
+  end
+  call :init, :when => :init
+  
   def get_messages
-    loop do
-      take_all { |msg| p msg }
-      puts "..."
-      Actor.sleep 2
-    end
+    take_all { |msg| p msg }
+    puts "..."
+    Actor.current << :get_messages
+    Actor.sleep 2
   end
   call :get_messages, :when => :get_messages
- 
+    
   private
    
   def take_all
@@ -37,7 +41,6 @@ class NodeManager
 end
 
 manager = NodeManager.spawn
-manager << :get_messages
-Actor.tick
+manager << :init
 
-loop { Actor.sleep 20 }
+loop { Actor.sleep 2 }
