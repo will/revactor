@@ -5,7 +5,7 @@ class NodeManager
   extend Actorize
   def initialize
     @ts = TupleClient::get_ts
-    @actors = {}
+    @actors = {:manager => Actor.current}
     receive_loop
   end
 
@@ -17,7 +17,7 @@ class NodeManager
   def get_messages
     take_all do |msg|
       p msg
-      Actor.current << msg      
+      @actors[:manager] << msg      
     end
     puts "... #{@actors.inspect}"
     
