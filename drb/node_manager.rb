@@ -33,7 +33,7 @@ class NodeManager
   call :create_actor, :when => T[:create_actor]
   
   def remote_create(_, node, actor_name, class_name)
-    @ts.write [node, [:manager, [:create_actor, actor_name, :create_actor] ] ]  
+    @ts.write [node, [:manager, [:create_actor, actor_name, class_name] ] ]  
   end
   call :remote_create, :when => T[:remote_create]
   
