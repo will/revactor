@@ -19,7 +19,8 @@ class NodeManager
   def get_messages
     take_all do |msg|
       actor, message = msg
-      @actors[actor] << message      
+      local_actor = @actors.fetch(actor) { |fail| puts "No such actor #{fail}"}
+      local_actor << message if local_actor
     end
     
     puts "[#{@node_name}]\t#{@actors.inspect}"
@@ -66,3 +67,19 @@ class NodeManager
   end
 end
 
+
+class RemoteActor
+  extend Actorize
+  def initialize(actor_class, remote_node)
+    @remote_node  = remote_node
+    @actor_class  = actor_class
+    @actor_name   = rand # TODO: replace with uuid?
+    Actor[:manager] << T[:remote_create, @remote_node, @actor_name, @actor_class]
+    receive_loop
+  end
+  
+  def forward(message)
+    @node_manager << T[:remote_send, @remote_node, @actor, message]
+  end
+  call :forward, :when => Object
+end
