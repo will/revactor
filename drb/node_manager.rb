@@ -79,7 +79,7 @@ class RemoteActor
   end
   
   def forward(message)
-    @node_manager << T[:remote_send, @remote_node, @actor, message]
+    Actor[:manager] << T[:remote_send, @remote_node, @actor_name, message]
   end
   call :forward, :when => Object
 end
