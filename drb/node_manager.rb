@@ -7,6 +7,7 @@ class NodeManager
     @node_name = node_name
     @ts = TupleClient::get_ts
     @actors = {:manager => Actor.current}
+    Actor[:manager] = Actor.current
     receive_loop
   end
 
@@ -33,12 +34,12 @@ class NodeManager
   call :create_actor, :when => T[:create_actor]
   
   def remote_create(_, node, actor_name, class_name)
-    @ts.write [node, [:manager, [:create_actor, actor_name, class_name] ] ]  
+    _remote_send(node, :manager, [:create_actor, actor_name, class_name])
   end
   call :remote_create, :when => T[:remote_create]
   
   def remote_send(_, node, actor, message)
-    @ts.write [node, [actor, message] ]
+    _remote_send(node, actor, message)
   end
   call :remote_send, :when => T[:remote_send]
   
@@ -59,4 +60,9 @@ class NodeManager
     end
     message
   end
+  
+  def _remote_send(node, actor, message)
+    @ts.write [node, [actor, message] ]
+  end
 end
+
