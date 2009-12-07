@@ -33,7 +33,8 @@ end
 
 %w{
   actor scheduler mailbox tcp unix http_client
-  filters/line filters/packet actorize
+  filters/line filters/packet actorize 
+  drb/node_manager drb/tupleclient drb/tupleserver
 }.each do |file|
   require File.dirname(__FILE__) + '/revactor/' + file
 end

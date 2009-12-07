@@ -1,6 +1,3 @@
-require '../lib/revactor'
-require 'tupleclient'
-
 module Revactor
   class NodeManager
     extend Actorize

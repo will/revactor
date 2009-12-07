@@ -1,4 +1,5 @@
-require 'node_manager'
+require '../lib/revactor'
+include Revactor
 
 class Dog
   extend Actorize

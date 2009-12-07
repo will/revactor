@@ -1,4 +1,5 @@
 require 'rinda/tuplespace'
+
 module Revactor
   module TupleClient
     def self.get_ts
