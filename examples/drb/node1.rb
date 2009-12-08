@@ -1,4 +1,4 @@
-require '../lib/revactor'
+require '../../lib/revactor'
 include Revactor
 
 class Dog
