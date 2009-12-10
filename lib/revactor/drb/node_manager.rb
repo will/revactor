@@ -18,7 +18,7 @@ module Revactor
     def get_messages
       take_all do |msg|
         actor, message = msg
-        puts "%%%% got: #{msg.inspect}"
+        # puts "%%%% got: #{msg.inspect}"
         local_actor = @actors.fetch(actor) { |fail| puts "No such actor #{fail}"}
         local_actor << message if local_actor
       end
@@ -71,7 +71,7 @@ module Revactor
     end
   
     def _remote_send(node, actor, message)
-      puts "**** sending #{node.inspect}\t#{actor.inspect}\t#{message.inspect}"
+      # puts "**** sending #{node.inspect}\t#{actor.inspect}\t#{message.inspect}"
       @ts.write [node, [actor, message] ]
     end
   end
