@@ -2,10 +2,10 @@ require 'rubygems'
 
 GEMSPEC = Gem::Specification.new do |s|
   s.name = "revactor"
-  s.version = "0.1.5"
-  s.authors = "Tony Arcieri"
+  s.version = "0.1.6"
+  s.authors = ["Tony Arcieri", "Will Leinweber"]
   s.email = "tony@medioh.com"
-  s.date = "2008-5-27"
+  s.date = "2009-12-15"
   s.summary = "Revactor is an Actor implementation for writing high performance concurrent programs"
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>= 1.9.0'
